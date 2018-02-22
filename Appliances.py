@@ -1,4 +1,3 @@
-dsadasffd
 
 
 class Appliances(self, name, consumption, intervall, duration, starttime, shiftable=False):

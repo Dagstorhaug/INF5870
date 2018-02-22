@@ -2,12 +2,12 @@
 
 class House(object):
     def __init__(self):
-        shiftable = []
-        nshiftable = []
-        schedule = []
+        self.shiftable = []
+        self.nshiftable = []
+        self.schedule = []
         for _ in range (0,23):
-            schedule.append({})
-
+            self.schedule.append({})
+        
 
 
 
