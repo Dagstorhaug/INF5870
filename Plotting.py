@@ -46,6 +46,32 @@ def consumption_plot(shift, nonshift):
     plt.tight_layout()
     plt.show()
 
+
+
+def plot_price(price):
+    f, (pricefig) = plt.subplots(1, 1)
+    pricefig.set(
+        title='Price of energy in neighborhood',
+        xlabel='Hour',
+        ylabel='Price, NOK/kWh'
+    )
+
+    pricefig.plot(price)
+    # Making the figure pretty
+    pricefig.tick_params(axis="both", which="both", bottom="off",
+                               top="off", labelbottom="on", left="off",
+                               right="off", labelleft="on")
+    pricefig.spines["top"].set_visible(False)
+    pricefig.spines["bottom"].set_visible(False)
+    pricefig.spines["right"].set_visible(False)
+    pricefig.spines["left"].set_visible(False)
+    pricefig.set_axisbelow(True)
+    pricefig.grid(b=True, which='major', axis='y', color='#cccccc',
+                        linestyle='--')
+    plt.tight_layout()
+    plt.show()
+
+
 if __name__ == "__main__":
     shiftable = np.random.rand(24)
     nonshiftable = np.random.rand(24)
