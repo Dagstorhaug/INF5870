@@ -25,7 +25,7 @@ def power_plots(shift=None, nonshift=None, shiftnames=None,
     elif price is not None:
         length = len(price)
     bins = np.arange(0, length)
-    width = 0.60
+    width = 0.9
     bottom = np.zeros(length)
 
     #iterate over shiftable and nonshiftable appliances to create stacked
@@ -66,8 +66,13 @@ def power_plots(shift=None, nonshift=None, shiftnames=None,
 
     if price is not None:
         pricefig = consumptionfig.twinx()
-        pricefig.plot(price, color='black')
+        pricefig.step(bins, price, color='black')
         pricefig.set(ylabel='Price, NOK/kWh')
+        pricefig.spines["top"].set_visible(False)
+        pricefig.spines["bottom"].set_visible(False)
+        pricefig.spines["right"].set_visible(False)
+        pricefig.spines["left"].set_visible(False)
+        consumptionfig.set_axisbelow(True)
 
 
     plt.tight_layout()
@@ -80,8 +85,7 @@ if __name__ == "__main__":
     shiftablenames = ['shiftable', 'shiftable']
     nonshiftablenames = ['nonshiftable', 'nonshiftable']
     price = np.random.rand(24)
-    consumption_plot(shift=shiftable, nonshift=nonshiftable,
-                     shiftnames=shiftablenames,
-                     nonshiftnames=nonshiftablenames,
-                     price=price)
+    power_plots(shift=shiftable, nonshift=nonshiftable,
+                shiftnames=shiftablenames, nonshiftnames=nonshiftablenames,
+                price=price)
 
