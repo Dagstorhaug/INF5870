@@ -15,23 +15,31 @@ plt.style.use('seaborn-colorblind')
 
 #Creates a stacked bargraph. putting the values of the np.array 'nonshift' at
 # the bottom and the values of np.array 'shift' on top.
-def consumption_plot(shift, nonshift, shiftnames, nonshiftnames, price):
+def power_plots(shift=None, nonshift=None, shiftnames=None,
+                     nonshiftnames=None, price=None):
     f, (consumptionfig) = plt.subplots(1, 1)
-    bins = np.arange(0, len(shift[0]))
+    if shift:
+        length = len(shift[0])
+    elif nonshift:
+        length = len(nonshift[0])
+    elif price is not None:
+        length = len(price)
+    bins = np.arange(0, length)
     width = 0.60
-    bottom = np.zeros(len(shift[0]))
+    bottom = np.zeros(length)
 
     #iterate over shiftable and nonshiftable appliances to create stacked
     # bars for the chart.
-    for i in range(len(nonshift)):
-        consumptionfig.bar(bins, nonshift[i], width=width, bottom=bottom,
-                           label=nonshiftnames[i])
-        bottom = np.add(bottom, nonshift[i])
-    for i in range(len(shift)):
-        consumptionfig.bar(bins, shift[i], width=width, bottom=bottom,
-                           label=shiftnames[i])
-        bottom = np.add(bottom, shift[i])
-
+    if nonshift:
+        for i in range(len(nonshift)):
+            consumptionfig.bar(bins, nonshift[i], width=width, bottom=bottom,
+                               label=nonshiftnames[i])
+            bottom = np.add(bottom, nonshift[i])
+    if shift:
+        for i in range(len(shift)):
+            consumptionfig.bar(bins, shift[i], width=width, bottom=bottom,
+                               label=shiftnames[i])
+            bottom = np.add(bottom, shift[i])
 
     consumptionfig.set(
         title='Consumption of households',
@@ -40,6 +48,7 @@ def consumption_plot(shift, nonshift, shiftnames, nonshiftnames, price):
         ylabel='Consumption, kWh'
         )
 
+    #retrieving labels to make a neat legend
     handles, labels = consumptionfig.get_legend_handles_labels()
     consumptionfig.legend(handles, labels)
 
@@ -54,9 +63,11 @@ def consumption_plot(shift, nonshift, shiftnames, nonshiftnames, price):
     consumptionfig.set_axisbelow(True)
     consumptionfig.grid(b=True, which='major', axis='y', color='#cccccc',
                         linestyle='--')
-    pricefig = consumptionfig.twinx()
-    pricefig.plot(price, color='black')
-    pricefig.set(ylabel='Price, NOK/kWh')
+
+    if price is not None:
+        pricefig = consumptionfig.twinx()
+        pricefig.plot(price, color='black')
+        pricefig.set(ylabel='Price, NOK/kWh')
 
 
     plt.tight_layout()
@@ -69,6 +80,8 @@ if __name__ == "__main__":
     shiftablenames = ['shiftable', 'shiftable']
     nonshiftablenames = ['nonshiftable', 'nonshiftable']
     price = np.random.rand(24)
-    consumption_plot(shiftable, nonshiftable, shiftablenames,
-                     nonshiftablenames, price)
+    consumption_plot(shift=shiftable, nonshift=nonshiftable,
+                     shiftnames=shiftablenames,
+                     nonshiftnames=nonshiftablenames,
+                     price=price)
 
